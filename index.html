@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WL Tracker 365</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">FUT Champions</p>
+        <h1>WL Tracker 365</h1>
+        <p class="subtitle">Controle sua WL, edite o elenco e salve históricos.</p>
+      </div>
+      <div class="record-card">
+        <span id="record">0V - 0D</span>
+        <small>Campanha atual</small>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab active" data-screen="home">Home</button>
+      <button class="tab" data-screen="match">Registrar</button>
+      <button class="tab" data-screen="ranking">Ranking</button>
+      <button class="tab" data-screen="squad">Elenco</button>
+      <button class="tab" data-screen="manage">Gerenciar</button>
+      <button class="tab" data-screen="history">Histórico</button>
+      <button class="tab" data-screen="summary">Resumo</button>
+    </nav>
+
+    <main>
+      <section id="home" class="screen active">
+        <div class="grid stats-grid">
+          <article class="stat-card"><small>Vitórias</small><strong id="wins">0</strong></article>
+          <article class="stat-card"><small>Derrotas</small><strong id="losses">0</strong></article>
+          <article class="stat-card"><small>Aproveitamento</small><strong id="winRate">0%</strong></article>
+          <article class="stat-card"><small>Rage Quit</small><strong id="rageQuits">0</strong></article>
+        </div>
+
+        <div class="highlight-panel">
+          <div><small>Artilheiro</small><strong id="topScorer">—</strong></div>
+          <div><small>Garçom</small><strong id="topAssist">—</strong></div>
+          <div><small>MVP da WL</small><strong id="topMvp">—</strong></div>
+        </div>
+
+        <div class="section-title">
+          <h2>Partidas</h2>
+          <span class="muted">15 jogos da WL atual</span>
+        </div>
+        <div class="match-list" id="matchOverview"></div>
+      </section>
+
+      <section id="match" class="screen">
+        <div class="match-header">
+          <div>
+            <label for="matchSelect">Escolha a partida</label>
+            <select id="matchSelect"></select>
+          </div>
+          <div class="status-pill" id="matchStatusText">Jogo 01</div>
+        </div>
+
+        <div class="form-card">
+          <div class="form-row">
+            <label>Resultado</label>
+            <select id="resultInput">
+              <option value="">Não jogado</option>
+              <option value="Vitória">Vitória</option>
+              <option value="Derrota">Derrota</option>
+              <option value="Rage Quit">Rage Quit</option>
+            </select>
+          </div>
+
+          <div class="score-row">
+            <div>
+              <label>Seus gols</label>
+              <input id="myScore" type="number" min="0" value="0" />
+            </div>
+            <span>x</span>
+            <div>
+              <label>Gols contra</label>
+              <input id="oppScore" type="number" min="0" value="0" />
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title">
+          <h2>Jogadores da partida</h2>
+          <button id="clearMatch" class="ghost">Limpar jogo</button>
+        </div>
+
+        <div id="matchPlayers" class="player-list"></div>
+      </section>
+
+      <section id="ranking" class="screen">
+        <div class="section-title">
+          <h2>Ranking da WL</h2>
+          <button id="exportData" class="ghost">Exportar dados</button>
+        </div>
+        <div class="ranking-grid">
+          <div class="ranking-card"><h3>Artilharia</h3><div id="goalsRanking"></div></div>
+          <div class="ranking-card"><h3>Assistências</h3><div id="assistsRanking"></div></div>
+          <div class="ranking-card"><h3>Participações</h3><div id="gaRanking"></div></div>
+          <div class="ranking-card"><h3>MVPs</h3><div id="mvpRanking"></div></div>
+        </div>
+      </section>
+
+      <section id="squad" class="screen">
+        <div class="section-title">
+          <h2>Elenco</h2>
+          <span class="muted">Stats somados automaticamente</span>
+        </div>
+        <div id="squadCards" class="squad-grid"></div>
+      </section>
+
+      <section id="manage" class="screen">
+        <div class="section-title">
+          <h2>Gerenciar Time</h2>
+          <span class="muted">Edite o elenco sem mexer no código</span>
+        </div>
+
+        <div class="manage-grid">
+          <div class="manage-card">
+            <h3>Adicionar jogador</h3>
+            <label>Nome do jogador</label>
+            <input id="newPlayerName" type="text" placeholder="Ex: Mbappé" />
+            <label>Tipo</label>
+            <select id="newPlayerRole">
+              <option value="Titular">Titular</option>
+              <option value="Reserva">Reserva</option>
+            </select>
+            <button id="addPlayer" class="primary">Adicionar ao elenco</button>
+            <p class="hint">O jogador entra em todos os jogos da WL atual com 0 gols e 0 assistências.</p>
+          </div>
+
+          <div class="manage-card">
+            <h3>Nova WL</h3>
+            <p class="muted">Salve a WL atual no histórico e comece uma nova com o mesmo elenco.</p>
+            <button id="newWL" class="primary">Salvar e iniciar nova WL</button>
+            <button id="resetCurrent" class="danger subtle">Resetar WL sem salvar</button>
+          </div>
+        </div>
+
+        <div class="section-title">
+          <h2>Editar elenco atual</h2>
+          <span class="muted">Remover jogador não apaga o histórico salvo</span>
+        </div>
+        <div id="managePlayers" class="manage-list"></div>
+      </section>
+
+      <section id="history" class="screen">
+        <div class="section-title">
+          <h2>Histórico de WLs</h2>
+          <button id="clearHistory" class="ghost">Limpar histórico</button>
+        </div>
+        <div id="historyList" class="history-list"></div>
+      </section>
+
+      <section id="summary" class="screen">
+        <div class="summary-card" id="summaryCard">
+          <p class="eyebrow">Resumo Final</p>
+          <h2>WL 365</h2>
+          <div class="summary-record" id="summaryRecord">0V - 0D</div>
+          <div class="summary-lines">
+            <p><span>Artilheiro:</span> <strong id="summaryScorer">—</strong></p>
+            <p><span>Garçom:</span> <strong id="summaryAssist">—</strong></p>
+            <p><span>MVP:</span> <strong id="summaryMvp">—</strong></p>
+            <p><span>Total de gols:</span> <strong id="summaryGoals">0</strong></p>
+          </div>
+        </div>
+        <button id="resetAll" class="danger">Resetar WL atual</button>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
